@@ -3,37 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <style>
-      h2{
-        text-align: center;
-        font-size: 40px;
-        color:red;
-        font-family: Courier New;
-      }
-      body, html {
-        height: 98%;
-        margin: 0;
-        background-color: black;
-      }
-      #zombie1{
-        width:300px;
-        height:300px;
-        position: absolute;
-      }
-      .background{
-        background-image: url("projectImages/background.png");
-        height:100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-      }
-      button{
-        width: auto;
-        top:96%;
-        left: 48%;
-        position: absolute;
-      }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
     <div class="background">
@@ -41,9 +11,9 @@
       <h2><b>Zombie Hunter</b></h2>
       <button type="button" onclick="resetGame()">End Game</button>
     </div>
-    <img id='zombie1' src="projectImages/zombie.gif">
+    <img id='zombie1' src="images/zombie.gif">
     <audio id="death">
-      <source src="projectImages/death.mp3" type="audio/mpeg">
+      <source src="src/death.mp3" type="audio/mpeg">
     </audio>
   <script>
     let currentScore = 0;
@@ -59,14 +29,14 @@
 
     function createExplosion(){
       let target = document.getElementById('zombie1');
-      target.src = "projectImages/explosion.gif";
+      target.src = "images/explosion.gif";
     }
 
     function createZombie(){
       if (clickable = true){
         clickable = false;
         let target = document.getElementById('zombie1');
-        target.src = "projectImages/zombie.gif";
+        target.src = "images/zombie.gif";
         let posArray = randomPosition();
         let zombie = document.getElementById('zombie1');
         zombie.style.position = 'fixed';
