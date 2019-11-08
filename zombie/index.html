@@ -51,9 +51,11 @@
       let posArray = randomPosition();
       if (zombieID == "zombie1"){
         curr_zomb1pos = posArray;
+        console.log("Zomb1 now at: " + posArray)
       }
       else if (zombieID == "zombie2"){
         curr_zomb2pos = posArray;
+        console.log("Zomb2 now at: " + posArray)
       }
       target.style.position = 'fixed';
       target.style.left = posArray[0] + "px";
@@ -71,6 +73,7 @@
         if (exploding1){
           return;
         }
+        exploding1 = true;
         addScore();
         createTargetExplosion(zombieID);
         setTimeout(function(){
@@ -78,10 +81,11 @@
           exploding1 = false;
         }, 350);
       }
-      else if (zombieID == 'zombie2'){
+      if (zombieID == 'zombie2'){
         if (exploding2){
           return;
         }
+        exploding2 = true;
         addScore();
         createTargetExplosion(zombieID);
         setTimeout(function(){
@@ -123,18 +127,17 @@
 
     resetTargetZombie('zombie1', default_zom1pos);
     resetTargetZombie('zombie2', default_zom2pos);
-    /*
     setInterval(function(){
-      if (curr_zomb1pos[0] == target.style.left || curr_zomb1pos[1] == target.style.top){
+      let target1 = document.getElementById('zombie1');
+      let target2 = document.getElementById('zombie2');
+      if (Math.floor(curr_zomb1pos[0]) == Math.floor(parseInt(target1.style.left)) || Math.floor(curr_zomb1pos[1]) == Math.floor(parseInt(target1.style.top))){
         createTargetZombie('zombie1');
       }
-    }, 2000);
-    setInterval(function(){
-      if (curr_zomb2pos[0] == target.style.left || curr_zomb2pos[1] == target.style.top){
+      if (Math.floor(curr_zomb2pos[0]) == Math.floor(parseInt(target2.style.left)) || Math.floor(curr_zomb2pos[1]) == Math.floor(parseInt(target2.style.top))){
         createTargetZombie('zombie2');
       }
     }, 2000);
-    */
+
     document.getElementById('zombie1').onclick = moveZombie1;
     document.getElementById('zombie2').onclick = moveZombie2;
   </script>
