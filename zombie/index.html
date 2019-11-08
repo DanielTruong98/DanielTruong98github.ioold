@@ -123,6 +123,18 @@
 
     resetTargetZombie('zombie1', default_zom1pos);
     resetTargetZombie('zombie2', default_zom2pos);
+    /*
+    setInterval(function(){
+      if (curr_zomb1pos[0] == target.style.left || curr_zomb1pos[1] == target.style.top){
+        createTargetZombie('zombie1');
+      }
+    }, 2000);
+    setInterval(function(){
+      if (curr_zomb2pos[0] == target.style.left || curr_zomb2pos[1] == target.style.top){
+        createTargetZombie('zombie2');
+      }
+    }, 2000);
+    */
     document.getElementById('zombie1').onclick = moveZombie1;
     document.getElementById('zombie2').onclick = moveZombie2;
   </script>
