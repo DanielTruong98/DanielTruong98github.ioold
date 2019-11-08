@@ -7,17 +7,27 @@
   </head>
   <body>
     <div class="background">
+      <!--Zombie Score and Title-->
       <h2 id='target'><b>Score: 0</b></h2>
       <h2><b>Zombie Hunter</b></h2>
-      <button type="button" onclick="resetGame()">End Game</button>
+      <!--Reset Button-->
+      <button type="button" onclick="newResetGame()">End Game</button>
     </div>
-    <img id='zombie1' src="images/zombie.gif">
+    <!--Zombie image-->
+    <img id='zombie1' src="images/zombie.gif" alt="zom1">
+    <img id='zombie2' src="images/zombie.gif" alt="zom2">
     <audio id="death">
       <source src="src/death.mp3" type="audio/mpeg">
     </audio>
   <script>
     let currentScore = 0;
-    let clickable = true;
+    let exploding1 = false;
+    let exploding2 = false;
+    let default_zom1pos = randomPosition();
+    let default_zom2pos = randomPosition();
+    let curr_zomb1pos = default_zom1pos;
+    let curr_zomb2pos = default_zom2pos;
+
     function randomPosition(){
       let max_width = window.innerWidth - 300;
       let max_height = window.innerHeight - 300;
@@ -27,66 +37,94 @@
       return arr;
     }
 
-    function createExplosion(){
-      let target = document.getElementById('zombie1');
+
+    //TODO
+    function createTargetExplosion(zombieID){
+      let target = document.getElementById(zombieID);
       target.src = "images/explosion.gif";
+      playDeathSound();
     }
 
-    function createZombie(){
-      if (clickable = true){
-        clickable = false;
-        let target = document.getElementById('zombie1');
-        target.src = "images/zombie.gif";
-        let posArray = randomPosition();
-        let zombie = document.getElementById('zombie1');
-        zombie.style.position = 'fixed';
-        zombie.style.left = posArray[0] + "px";
-        zombie.style.top = posArray[1] + "px";
+    function createTargetZombie(zombieID){
+      let target = document.getElementById(zombieID);
+      target.src = "images/zombie.gif";
+      let posArray = randomPosition();
+      if (zombieID == "zombie1"){
+        curr_zomb1pos = posArray;
       }
-      clickable = true;
+      else if (zombieID == "zombie2"){
+        curr_zomb2pos = posArray;
+      }
+      target.style.position = 'fixed';
+      target.style.left = posArray[0] + "px";
+      target.style.top = posArray[1] + "px";
     }
+
     function playDeathSound(){
       let sound = document.getElementById('death');
       sound.play();
     }
 
-    function moveZombie(){
-      addScore();
-      playDeathSound();
-      createExplosion();
-      setTimeout(createZombie,350);
-      clickable = false;
-    }
-
-    function addScore(){
-      if (clickable == true){
-        currentScore++;
-        let scoreline = document.getElementById('target');
-        scoreline.innerHTML = "Score: " + currentScore;
+    //TODO
+    function moveTargetZombie(zombieID){
+      if (zombieID == 'zombie1'){
+        if (exploding1){
+          return;
+        }
+        addScore();
+        createTargetExplosion(zombieID);
+        setTimeout(function(){
+          createTargetZombie(zombieID);
+          exploding1 = false;
+        }, 350);
+      }
+      else if (zombieID == 'zombie2'){
+        if (exploding2){
+          return;
+        }
+        addScore();
+        createTargetExplosion(zombieID);
+        setTimeout(function(){
+          createTargetZombie(zombieID);
+          exploding2 = false;
+        }, 350);
       }
     }
 
-    function resetZombie(){
-      let target = document.getElementById('zombie1');
-      target.style.left = "43%";
-      target.style.top = "43%";
+    function addScore(){
+      currentScore++;
+      let scoreline = document.getElementById('target');
+      scoreline.innerHTML = "Score: " + currentScore;
     }
-    function resetGame(){
+
+    //TODO
+    function resetTargetZombie(zombieID, arr){
+      let target = document.getElementById(zombieID);
+      target.style.left = arr[0] + "px";
+      target.style.top = arr[1] + "px";
+    }
+
+    //TODO
+    function newResetGame(){
       let scoreline = document.getElementById('target');
       currentScore = 0;
       scoreline.innerHTML = "Score: 0";
-      resetZombie();
+      //Add as many resetTargetZombie for amount of zombies
+      resetTargetZombie('zombie1', default_zom1pos);
+      resetTargetZombie('zombie2', default_zom2pos);
     }
-    /*
-    function zombino1(){
-      addScore();
-      playDeathSound();
-      createExplosion(/*Target*/)
-      //setTimeout(function to call createZombie(zombino1), 350)
+
+    function moveZombie1(){
+      moveTargetZombie('zombie1');
     }
-    */
-    createZombie();
-    document.getElementById('zombie1').onclick = moveZombie;
+    function moveZombie2(){
+      moveTargetZombie('zombie2');
+    }
+
+    resetTargetZombie('zombie1', default_zom1pos);
+    resetTargetZombie('zombie2', default_zom2pos);
+    document.getElementById('zombie1').onclick = moveZombie1;
+    document.getElementById('zombie2').onclick = moveZombie2;
   </script>
   </body>
 </html>
