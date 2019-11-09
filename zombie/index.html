@@ -25,8 +25,10 @@
     let exploding2 = false;
     let default_zom1pos = randomPosition();
     let default_zom2pos = randomPosition();
-    let curr_zomb1pos = default_zom1pos;
-    let curr_zomb2pos = default_zom2pos;
+    let curr_zom1pos = default_zom1pos;
+    let curr_zom2pos = default_zom2pos;
+    let checker1 = curr_zom1pos;
+    let checker2 = curr_zom2pos;
 
     function randomPosition(){
       let max_width = window.innerWidth - 300;
@@ -37,8 +39,6 @@
       return arr;
     }
 
-
-    //TODO
     function createTargetExplosion(zombieID){
       let target = document.getElementById(zombieID);
       target.src = "images/explosion.gif";
@@ -49,17 +49,15 @@
       let target = document.getElementById(zombieID);
       target.src = "images/zombie.gif";
       let posArray = randomPosition();
-      if (zombieID == "zombie1"){
-        curr_zomb1pos = posArray;
-        console.log("Zomb1 now at: " + posArray)
-      }
-      else if (zombieID == "zombie2"){
-        curr_zomb2pos = posArray;
-        console.log("Zomb2 now at: " + posArray)
-      }
       target.style.position = 'fixed';
       target.style.left = posArray[0] + "px";
       target.style.top = posArray[1] + "px";
+      if (zombieID == 'zombie1'){
+        curr_zom1pos = posArray;
+      }
+      if (zombieID == 'zombie2'){
+        curr_zom2pos = posArray;
+      }
     }
 
     function playDeathSound(){
@@ -67,7 +65,6 @@
       sound.play();
     }
 
-    //TODO
     function moveTargetZombie(zombieID){
       if (zombieID == 'zombie1'){
         if (exploding1){
@@ -101,14 +98,12 @@
       scoreline.innerHTML = "Score: " + currentScore;
     }
 
-    //TODO
     function resetTargetZombie(zombieID, arr){
       let target = document.getElementById(zombieID);
       target.style.left = arr[0] + "px";
       target.style.top = arr[1] + "px";
     }
 
-    //TODO
     function newResetGame(){
       let scoreline = document.getElementById('target');
       currentScore = 0;
@@ -116,6 +111,14 @@
       //Add as many resetTargetZombie for amount of zombies
       resetTargetZombie('zombie1', default_zom1pos);
       resetTargetZombie('zombie2', default_zom2pos);
+      clearInterval(move1);
+      clearInterval(move2);
+      curr_zom1pos = default_zom1pos;
+      curr_zom2pos = default_zom2pos;
+      checker1 = curr_zom1pos;
+      checker2 = curr_zom2pos;
+      move1 = setInterval(checkingZombie1, 2000);
+      move2 = setInterval(checkingZombie2, 2000);
     }
 
     function moveZombie1(){
@@ -125,19 +128,37 @@
       moveTargetZombie('zombie2');
     }
 
+    function checkingZombie1(){
+      if (curr_zom1pos[0] == checker1[0] && curr_zom1pos[1] == checker1[1]){
+        createTargetZombie('zombie1');
+        checker1[0] = curr_zom1pos[0];
+        checker1[1] = curr_zom1pos[1];
+      }
+      else{
+        checker1[0] = curr_zom1pos[0];
+        checker1[1] = curr_zom1pos[1];
+      }
+    }
+
+    function checkingZombie2(){
+      if (curr_zom2pos[0] == checker2[0] && curr_zom2pos[1] == checker2[1]){
+        createTargetZombie('zombie2');
+        checker2[0] = curr_zom2pos[0];
+        checker2[1] = curr_zom2pos[1];
+      }
+      else{
+        checker2[0] = curr_zom2pos[0];
+        checker2[1] = curr_zom2pos[1];
+      }
+    }
+    //Moves zombie1 after 2 seconds of not being clicked
+    let move1 = setInterval(checkingZombie1, 2000);
+
+    //Moves zombie2 after 2 seconds of not being clicked
+    let move2 = setInterval(checkingZombie2, 2000);
+
     resetTargetZombie('zombie1', default_zom1pos);
     resetTargetZombie('zombie2', default_zom2pos);
-    setInterval(function(){
-      let target1 = document.getElementById('zombie1');
-      let target2 = document.getElementById('zombie2');
-      if (Math.floor(curr_zomb1pos[0]) == Math.floor(parseInt(target1.style.left)) || Math.floor(curr_zomb1pos[1]) == Math.floor(parseInt(target1.style.top))){
-        createTargetZombie('zombie1');
-      }
-      if (Math.floor(curr_zomb2pos[0]) == Math.floor(parseInt(target2.style.left)) || Math.floor(curr_zomb2pos[1]) == Math.floor(parseInt(target2.style.top))){
-        createTargetZombie('zombie2');
-      }
-    }, 2000);
-
     document.getElementById('zombie1').onclick = moveZombie1;
     document.getElementById('zombie2').onclick = moveZombie2;
   </script>
