@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+  <script>
+    //Part A
+    function genButton(n){
+      for (let i = 0; i < n; i++){
+        let b = document.createElement("BUTTON");
+        let character = String.fromCharCode(65 + i);
+        b.innerHTML = character;
+        b.onclick = function() {console.log(character + " was pressed.")};
+        document.body.appendChild(b);
+      }
+    }
+
+    //Part B
+    function createRecipe(title, servings, ingredients){
+      this.title = title;
+      this.servings = servings;
+      this.ingredients = ingredients;
+      this.print = function(){
+        document.write("<b>Title: " + title + "</b><br><br>");
+        document.write("<b>Serves: " + servings.toString() + "</b><br><br>");
+        document.write("<b>Ingredients:</b><br><br>");
+        for (let i = 0; i < ingredients.length; i++){
+          document.write("<b>" + ingredients[i] + "</b>");
+          document.write("<br><br>");
+        }
+      }
+    }
+
+    let num = prompt("How many buttons do you want to create?");
+    genButton(num);
+    document.write("<br>");
+    myObj = new createRecipe("Chicken Cacciatore", 2, ["cinnamon", "lettuce", "onion"] );
+    myObj.print();
+  </script>
+  </body>
+</html>
