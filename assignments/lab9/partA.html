@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+  <p>How many buttons to create?</p>
+  <input type="text" id="amount">
+  <button id="submit" type="button">Go!</button><br>
+  <script>
+    let arrayBtn = [];
+
+    function randPosition(){
+      let max_width = window.innerWidth - 120;
+      let max_height = window.innerHeight - 60;
+      let left = (Math.floor(Math.random() * max_width)).toString() + "px";
+      let top = (Math.floor(Math.random() * max_height)).toString() + "px";
+      let posArr = [left,top];
+      return posArr;
+    }
+
+    function randColor(){
+      let r = (Math.floor(Math.random() * 256)).toString();
+      let g = (Math.floor(Math.random() * 256)).toString();
+      let b = (Math.floor(Math.random() * 256)).toString();
+      let rgb = "rgb(" + r + ", " + g + ", " + b + ")";
+      return rgb;
+    }
+    function Button(width, height, left, top, color, button_number){
+      this.button_number = button_number;
+      this.btn = document.createElement("BUTTON");
+      document.body.appendChild(this.btn);
+      this.btn.style.width = width
+      this.btn.style.height = height;
+      this.btn.style.top = top;
+      this.btn.style.left = left;
+      this.btn.style.backgroundColor = color;
+      this.btn.style.position = "absolute"
+      this.setLocation = function (left, top){
+        this.btn.style.top = top;
+        this.btn.style.left = left;
+      }
+    }
+
+    function createButton(){
+      let amount = document.getElementById("amount").value
+      if (amount < 5 || amount > 100){
+        alert("Please enter a number between 5 and 100 inclusive.");
+      }
+      else{
+        for (let i = 0; i < amount; i++){
+          let pos = randPosition();
+          let color = randColor();
+          console.log(pos);
+          //Button(width, height, left, top, color, number)
+          arrayBtn.push(new Button("120px", "60px", pos[0], pos[1], color, i))
+        }
+      }
+    }
+    document.getElementById("submit").onclick = createButton;
+    setInterval(function(){
+      for (let i = 0; i < arrayBtn.length; i++){
+        let newPos = randPosition();
+        console.log(newPos);
+        arrayBtn[i].setLocation(newPos[0],newPos[1]);
+      }
+    }, 500);
+
+    console.log("Width", window.innerWidth);
+    console.log("Height", window.innerHeight);
+  </script>
+  </body>
+</html>
