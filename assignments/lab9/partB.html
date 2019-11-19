@@ -8,9 +8,12 @@
   <p>How many buttons to create?</p>
   <input type="text" id="amount">
   <button id="submit" type="button">Go!</button><br>
-  <p id="error"></p>
+  <p id="msg"></p>
+  <div id="btnDiv"></div>
   <script>
     let arrayBtn = [];
+    let user_at = 0;
+    let clickable = false;
 
     function randPosition(){
       let max_width = window.innerWidth - 120;
@@ -30,42 +33,77 @@
     }
 
     function Button(width, height, left, top, color, button_number){
+      let target = document.getElementById("btnDiv");
       this.button_number = button_number;
       this.btn = document.createElement("BUTTON");
-      document.body.appendChild(this.btn);
+      target.appendChild(this.btn);
       this.btn.style.width = width
       this.btn.style.height = height;
       this.btn.style.top = top;
       this.btn.style.left = left;
       this.btn.style.backgroundColor = color;
-      this.btn.style.position = "absolute"
+      this.btn.style.position = "static"
       this.setLocation = function (left, top){
+        this.btn.style.position = "absolute";
         this.btn.style.top = top;
         this.btn.style.left = left;
       }
-    }
-
-    function createButton(){
-      let amount = document.getElementById("amount").value;
-      if (isNaN(amount)){
-        document.getElementById("error").innerHTML = "Please enter a number.";
-      }
-      else if (amount < 5 || amount > 100){
-        document.getElementById("error").innerHTML = "Please enter a number between 5 and 100 inclusive.";
-      }
-      else{
-        document.getElementById("error").innerHTML = "";
-        for (let i = 0; i < amount; i++){
-          let pos = randPosition();
-          let color = randColor();
-          //Button(width, height, left, top, color, number)
-          arrayBtn.push(new Button("120px", "60px", pos[0], pos[1], color, i))
+      this.btn.onclick = function(){
+        if (clickable == false){
+          return;
+        }
+        else{
+          if (user_at == button_number){
+            document.getElementById("msg").innerHTML = "";
+            user_at++;
+          }
+          else{
+            document.getElementById("msg").innerHTML = "Wrong Order! Please try again.";
+            user_at = 0;
+          }
+          if (user_at == arrayBtn.length){
+            document.getElementById("msg").innerHTML = "Excellent memory!";
+            clickable = false;
+          }
         }
       }
     }
 
-    console.log("Width", window.innerWidth);
-    console.log("Height", window.innerHeight);
+    function checkValidAmount(amt){
+      if (isNaN(amt)){
+        document.getElementById("msg").innerHTML = "Please enter a number.";
+        return false;
+      }
+      else if (amt < 5 || amt > 100){
+        document.getElementById("msg").innerHTML = "Please enter a number between 5 and 100 inclusive.";
+        return false;
+      }
+      document.getElementById("msg").innerHTML = "";
+      return true;
+    }
+
+    function createButton(){
+      let amount = document.getElementById("amount").value;
+      if (checkValidAmount(amount)){
+        let startposW = "10px";
+        let startposH = "25%";
+        for (let i = 0; i < amount; i++){
+          let color = randColor();
+          //Button(width, height, left, top, color, number)
+          arrayBtn.push(new Button("120px", "60px", startposW, startposH, color, i));
+        }
+      }
+      setTimeout(function(){
+        clickable = true;
+        for (let i = 0; i < arrayBtn.length; i++){
+          let newPos = randPosition();
+          arrayBtn[i].setLocation(newPos[0], newPos[1]);
+        }
+      }, arrayBtn.length * 1000);
+    }
+
+
+    document.getElementById("submit").onclick = createButton;
   </script>
   </body>
 </html>
