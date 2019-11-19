@@ -64,13 +64,8 @@
       }
     }
 
-    document.getElementById("submit").onclick = createButton;
-    setInterval(function(){
-      for (let i = 0; i < arrayBtn.length; i++){
-        let newPos = randPosition();
-        arrayBtn[i].setLocation(newPos[0],newPos[1]);
-      }
-    }, 2000);
+    console.log("Width", window.innerWidth);
+    console.log("Height", window.innerHeight);
   </script>
   </body>
 </html>
