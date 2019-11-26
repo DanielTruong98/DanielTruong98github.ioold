@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <head>
     <meta charset="utf-8">
     <title></title>
@@ -58,6 +59,7 @@
         border: solid;
         margin-left:auto;
         margin-right: auto;
+        font-size: larger;
       }
       .insideBox{
         display: inline-block;
@@ -96,12 +98,14 @@
       let score = 0;
       let CURRENT_WORD = getRandomWord(WORD_BANK);
 
+      //get a random word from WORD_BANK and returns the random word
       function getRandomWord(word_arr){
         let position = Math.floor(Math.random() * 10);
         console.log(position);
         return word_arr[position];
       }
 
+     	//returns the amount of times a letter appears in the word
       function checkLetterOccurences(letter, word){
         let occurence = 0;
         for (let i = 0; i < word.length; i++){
@@ -112,48 +116,56 @@
         return occurence;
       }
 
-      function button(letter, i) {
-      	//this.width = width;
-        //this.height = height;
+      //object constructor for the buttons
+      function button(letter) {
         //have to make buttons bigger (not mobile friendly rn)
-        this.letter = letter;
-        let btni = document.createElement('Button');
         let l_box = document.getElementById("letter_box");
-        l_box.appendChild(btni);	//Places letters inside div box with ID = "letter_box"
-        //document.body.appendChild(btni);
-        btni.id = 'button ' + i; // adding id but can take out if you want array
-        btni.className = 'buttonschanger';
-        btni.style.position = 'relative';
-        btni.innerHTML = letter;
-        this.hide = document.getElementById(btni.id).onclick = function () {
+        this.letter = letter;
+        this.btn = document.createElement('BUTTON');
+        l_box.appendChild(this.btn);	//Places letters inside div box with ID = "letter_box"
+        this.btn.className = 'buttonschanger';
+        this.btn.style.position = 'relative';
+        this.btn.innerHTML = letter;
+        this.btn.onclick = function(){
+          this.style.visibility = 'hidden';
           console.log("Clicked: " + letter);
-          btni.style.visibility = 'hidden';
+          testLetter(letter);
+          //checkLetterOccurences(letter, word)
         };
       }
-			/*
-      function hiddenLetter(letter){
-        this.letter = letter;
-        let box = document.createElement("p");
-        let w_box = document.getElementById("word_box");
-        box.innerhtml = letter;
-        box.className = 'insideBox';
-        box.style.position = 'relative';
-        w_box.appendChild(box);
-        this.makeVisible = function(){
-          this.box.style.visibility = 'visible';
+
+      //checks letter inside CURRENT_WORD
+      function testLetter(letter){
+        for (let i = 0; i < CURRENT_WORD.length; i++){
+          if (CURRENT_WORD[i] == letter.toLowerCase()){
+            console.log("Found at: " + i);
+            replaceLetter(letter, i);
+          }
         }
       }
-			*/
-      function createbutton() {
-      	//let width = '100px';
-        //let height = '100px';
-        for (let i = 0; i < 26; ++i) {
-          let letter = String.fromCharCode(65 + i);
-          let newbutton = new button(letter, i);
-          buttonarray.push(newbutton);
-        }console.log(buttonarray); // just testing array here
+
+      //replaces letter inside CURRENT_DISPLAYED_WORD
+      function replaceLetter(letter, position){
+        let new_word_arr = [];
+        for (let i = 0; i < CURRENT_DISPLAYED_WORD.length; i++){
+          new_word_arr.push(CURRENT_DISPLAYED_WORD[i]);
+        }
+        new_word_arr[position] = letter;
+        CURRENT_DISPLAYED_WORD = new_word_arr;
+        console.log("New current_display: " + CURRENT_DISPLAYED_WORD);
+        displayWord(CURRENT_DISPLAYED_WORD);
       }
 
+      //creates the buttons for user to click on
+      function createbutton() {
+        for (let i = 0; i < 26; ++i) {
+          let letter = String.fromCharCode(65 + i);
+          let newbutton = new button(letter);
+          buttonarray.push(newbutton);
+        }
+      }
+
+      //resets the game to the original position
       function resetGame(){
         for (let i = 0; i < buttonarray.length; i++){
           buttonarray[i].style.visibility = 'visible';
@@ -163,7 +175,11 @@
         CURRENT_WORD = getRandomWord(WORD_BANK);
       }
 
-      function displayScore(score){
+      function changeScore(score, occurence){
+
+      }
+
+      function displayEndScore(score){
         let name = prompt("Please enter your name");
         let board = document.createElement('div');
         board.className = "scoreBoard";
@@ -177,35 +193,43 @@
           word_arr[i] = '_';
         }
         word_arr = word_arr.join(' ');
-        let target = document.getElementById("word_box")
+        let target = document.getElementById("word_box");
         let newp = document.createElement('p');
         newp.innerHTML = word_arr;
         target.appendChild(newp);
-        //createWord(word_arr);
         console.log("Word: " + word);
         console.log("Word length: " + word.length);
         console.log("Word_arr length: " + word_arr.length);
         console.log(word_arr);
       }
+      //replaces the letter if the user's guess is correct
+      function replaceLetterInWord(letter, word){
 
-      function createWord(word_arr){
-        /*
-        for (let i = 0; i < word_arr.length; i++){
-          let letter = word_arr[i];
-          let new_box = new hiddenLetter(letter);
-          wordarray.push(new_box);
-        }
-
-
-        console.log(wordarray);
-        */
       }
 
+      function displayWord(display_word_arr){
+        display_word_arr = display_word_arr.join(' ');
+        let target = document.getElementById("word_box");
+        target.innerHTML = display_word_arr;
+        console.log("Word: " + CURRENT_WORD);
+        console.log("Word length: " + CURRENT_WORD.length);
+        console.log("Word_arr length: " + display_word_arr.length);
+        console.log(display_word_arr);
+      }
+
+      function setDisplayWord(word){
+        let word_arr = [];
+        for (let i = 0; i < word.length; i++){
+          word_arr[i] = '_';
+        }
+        CURRENT_DISPLAYED_WORD = word_arr;
+      }
+
+
       createbutton();
-      displayWord(CURRENT_WORD);
-      //displayScore('dasdfafaf',5);
-      //console.log(getRandomWord(WORD_BANK)) //testing for randomword
-      //displayScore(score);
+      setDisplayWord(CURRENT_WORD);
+      displayWord(CURRENT_DISPLAYED_WORD);
+
     </script>
   </body>
 </html>
