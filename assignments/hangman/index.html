@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      .header {
+      	padding: 60px;
+        text-align: center;
+        color: black;
+        font-size: 30px;
+      }
+
+      .column {
+      	float: left;
+        width: 20%;
+        padding-left: 25%;
+      }
+
+      .row:after {
+      	content: "";
+        display: table;
+        clear: both;
+      }
+
+      .buttonschanger {
+      	border-radius: 8px;
+        margin: 0.5px;
+        border: none;
+        background-color: lightskyblue;
+        font-size: larger;
+        font-family: "Courier New";
+        font-weight: bold;
+        text-align: center;
+        border: solid;
+      }
+
+      .scoreBoard{
+      	border-radius: 10px;
+        margin: 20%;
+        background-color: green;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      .letterBox{
+      	width: 50%;
+        text-align: center;
+        border: solid;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .wordBox{
+      	width:50%;
+        height:50px;
+        text-align: center;
+        border: solid;
+        margin-left:auto;
+        margin-right: auto;
+      }
+      .insideBox{
+        display: inline-block;
+        border-radius:8px;
+        margin: 0.5px;
+        font-size: larger;
+        font-weight: bold;
+        text-align: center;
+        border: solid;
+      }
+    </style>
+  </head>
+  <body>
+    <div class = "header">
+      <h1>HANGMAN</h1>
+    </div>
+    <div class = "wordBox" id = "word_box">
+    <!--Word goes here-->
+    </div>
+    <div class = "row">
+      <div class = "column">
+        <h2 id = "score"> Score: </h2>
+      </div>
+      <div class = "column">
+        <h2 id = "lives"> Lives: </h2>
+      </div>
+    </div>
+    <div class = "letterBox" id = "letter_box">
+    </div>
+    <script>
+      //Global Variables
+      let WORD_BANK = ['committee', 'thinkable', 'hanging', 'sweater', 'window', 'wicked', 'humorous', 'amused', 'entertain', 'unsuitable'];
+      let GUESS_LIMIT = 7;
+      let buttonarray = [];
+      let wordarray = [];
+      let score = 0;
+      let CURRENT_WORD = getRandomWord(WORD_BANK);
+
+      function getRandomWord(word_arr){
+        let position = Math.floor(Math.random() * 10);
+        console.log(position);
+        return word_arr[position];
+      }
+
+      function checkLetterOccurences(letter, word){
+        let occurence = 0;
+        for (let i = 0; i < word.length; i++){
+          if (letter == word[i]){
+            occurence++;
+          }
+        }
+        return occurence;
+      }
+
+      function button(letter, i) {
+      	//this.width = width;
+        //this.height = height;
+        //have to make buttons bigger (not mobile friendly rn)
+        this.letter = letter;
+        let btni = document.createElement('Button');
+        let l_box = document.getElementById("letter_box");
+        l_box.appendChild(btni);	//Places letters inside div box with ID = "letter_box"
+        //document.body.appendChild(btni);
+        btni.id = 'button ' + i; // adding id but can take out if you want array
+        btni.className = 'buttonschanger';
+        btni.style.position = 'relative';
+        btni.innerHTML = letter;
+        this.hide = document.getElementById(btni.id).onclick = function () {
+          console.log("Clicked: " + letter);
+          btni.style.visibility = 'hidden';
+        };
+      }
+			/*
+      function hiddenLetter(letter){
+        this.letter = letter;
+        let box = document.createElement("p");
+        let w_box = document.getElementById("word_box");
+        box.innerhtml = letter;
+        box.className = 'insideBox';
+        box.style.position = 'relative';
+        w_box.appendChild(box);
+        this.makeVisible = function(){
+          this.box.style.visibility = 'visible';
+        }
+      }
+			*/
+      function createbutton() {
+      	//let width = '100px';
+        //let height = '100px';
+        for (let i = 0; i < 26; ++i) {
+          let letter = String.fromCharCode(65 + i);
+          let newbutton = new button(letter, i);
+          buttonarray.push(newbutton);
+        }console.log(buttonarray); // just testing array here
+      }
+
+      function resetGame(){
+        for (let i = 0; i < buttonarray.length; i++){
+          buttonarray[i].style.visibility = 'visible';
+        }
+        score = 0;
+        GUESS_LIMIT = 7;
+        CURRENT_WORD = getRandomWord(WORD_BANK);
+      }
+
+      function displayScore(score){
+        let name = prompt("Please enter your name");
+        let board = document.createElement('div');
+        board.className = "scoreBoard";
+        board.innerHTML = name + ", your score is " + score;
+        document.body.appendChild(board);
+      }
+
+      function displayWord(word){
+        let word_arr = [];
+        for (let i = 0; i < word.length; i++){
+          word_arr[i] = '_';
+        }
+        word_arr = word_arr.join(' ');
+        let target = document.getElementById("word_box")
+        let newp = document.createElement('p');
+        newp.innerHTML = word_arr;
+        target.appendChild(newp);
+        //createWord(word_arr);
+        console.log("Word: " + word);
+        console.log("Word length: " + word.length);
+        console.log("Word_arr length: " + word_arr.length);
+        console.log(word_arr);
+      }
+
+      function createWord(word_arr){
+        /*
+        for (let i = 0; i < word_arr.length; i++){
+          let letter = word_arr[i];
+          let new_box = new hiddenLetter(letter);
+          wordarray.push(new_box);
+        }
+
+
+        console.log(wordarray);
+        */
+      }
+
+      createbutton();
+      displayWord(CURRENT_WORD);
+      //displayScore('dasdfafaf',5);
+      //console.log(getRandomWord(WORD_BANK)) //testing for randomword
+      //displayScore(score);
+    </script>
+  </body>
+</html>
