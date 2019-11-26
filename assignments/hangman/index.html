@@ -92,11 +92,12 @@
     <script>
       //Global Variables
       let WORD_BANK = ['committee', 'thinkable', 'hanging', 'sweater', 'window', 'wicked', 'humorous', 'amused', 'entertain', 'unsuitable'];
-      let GUESS_LIMIT = 7;
+      let LIVES = 7;
       let buttonarray = [];
       let wordarray = [];
       let score = 0;
       let CURRENT_WORD = getRandomWord(WORD_BANK);
+      let CURRENT_DISPLAY_WORD = [];
 
       //get a random word from WORD_BANK and returns the random word
       function getRandomWord(word_arr){
@@ -109,10 +110,11 @@
       function checkLetterOccurences(letter, word){
         let occurence = 0;
         for (let i = 0; i < word.length; i++){
-          if (letter == word[i]){
+          if (letter.toLowerCase() == word[i]){
             occurence++;
           }
         }
+        console.log(occurence);
         return occurence;
       }
 
@@ -130,7 +132,7 @@
           this.style.visibility = 'hidden';
           console.log("Clicked: " + letter);
           testLetter(letter);
-          //checkLetterOccurences(letter, word)
+          changeScore(checkLetterOccurences(letter, CURRENT_WORD));
         };
       }
 
@@ -171,12 +173,21 @@
           buttonarray[i].style.visibility = 'visible';
         }
         score = 0;
-        GUESS_LIMIT = 7;
+        LIVES = 7;
         CURRENT_WORD = getRandomWord(WORD_BANK);
       }
 
-      function changeScore(score, occurence){
-
+      function changeScore(occurence){
+        if (occurence != 0){
+          score = score + occurence;
+          updateScoreDisplay();
+          console.log(score);
+        }
+        else {
+        	score--;
+          updateScoreDisplay();
+          console.log(score);
+        }
       }
 
       function displayEndScore(score){
@@ -225,6 +236,15 @@
         CURRENT_DISPLAYED_WORD = word_arr;
       }
 
+      function updateLivesDisplay(){
+        let target = document.getElementById("lives");
+        target.innerHTML = "Lives: " + LIVES;
+      }
+
+      function updateScoreDisplay(){
+        let target = document.getElementById("score");
+        target.innerHTML = "Score: " + score;
+      }
 
       createbutton();
       setDisplayWord(CURRENT_WORD);
