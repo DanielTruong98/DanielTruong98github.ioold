@@ -156,7 +156,6 @@
 
       //object constructor for the buttons
       function button(letter) {
-        //have to make buttons bigger (not mobile friendly rn) changed to 7 vh
         let l_box = document.getElementById("letter_box");
         this.letter = letter;
         this.btn = document.createElement('BUTTON');
@@ -227,6 +226,8 @@
         scoreboard.style.display = "none";
       }
 
+      //changes global variable score and updates the score.
+      //if occurence == 0 then lives-- and score--, checks if 0 lives after
       function changeScore(occurence){
         if (occurence != 0){
           score = score + occurence;
@@ -241,6 +242,7 @@
         }
       }
 
+      //prompts user for name, hides letterbox, displays name
       function displayEndScore(score){
         let name = prompt("Please enter your name");
         let scoreboard = document.getElementById("score_box");
@@ -250,6 +252,7 @@
         letterbox.style.display = "none";
       }
 
+      //used to reset CURRENT_DISPLAY_WORD to all underscores and display only underscores where the wordbox is
       function displayWord(word){
         let word_arr = [];
         for (let i = 0; i < word.length; i++){
@@ -290,6 +293,7 @@
         target.innerHTML = "Score: " + score;
       }
 
+      //Checks if the player's lives == 0, if it is 0 then the game ends
       function checkLives(){
         if (LIVES == 0){
           displayEndScore(score);
