@@ -117,9 +117,15 @@
     <script>
       //Global Variables
       let WORD_BANK = ['committee', 'thinkable', 'hanging', 'sweater', 'window', 'wicked', 'humorous', 'amused', 'entertain', 'unsuitable'];
-      let DEFINITION_BANK = ["A group of people appointed for a specific function.", 'Able to be thought of or imagined; conceivable.',
-      'To be suspended in the air.', 'A knitted garment typically long sleeves, worn over the upper body', 'An opening in the wall made of glass or other transparent material, to see through.',
-      'Evil or morally wrong', 'A quality of being amusing or comic.', 'Finding something funny or entertaining', 'Provide (someone) with amusement or enjoyment.',
+      let DEFINITION_BANK = ["A group of people appointed for a specific function.",
+      'Able to be thought of or imagined; conceivable.',
+      'To be suspended in the air.',
+      'A knitted garment typically long sleeves, worn over the upper body',
+      'An opening in the wall made of glass or other transparent material, to see through.',
+      'Evil or morally wrong',
+      'A quality of being amusing or comic.',
+      'Finding something funny or entertaining',
+      'Provide (someone) with amusement or enjoyment.',
       'To be unfit or inapproriate.'];
       let LIVES = 7;
       let buttonarray = [];
@@ -165,6 +171,8 @@
           console.log("Clicked: " + letter);
           testLetter(letter);
           changeScore(checkLetterOccurences(letter, CURRENT_WORD));
+          console.log("CURRENT_DISPLAY_WORD:" + CURRENT_DISPLAY_WORD);
+          end_condition(CURRENT_DISPLAY_WORD);
         };
       }
 
@@ -181,21 +189,20 @@
       //replaces letter inside CURRENT_DISPLAYED_WORD
       function replaceLetter(letter, position){
         let new_word_arr = [];
-        for (let i = 0; i < CURRENT_DISPLAYED_WORD.length; i++){
-          new_word_arr.push(CURRENT_DISPLAYED_WORD[i]);
+        for (let i = 0; i < CURRENT_DISPLAY_WORD.length; i++){
+          new_word_arr.push(CURRENT_DISPLAY_WORD[i]);
         }
         new_word_arr[position] = letter;
-        CURRENT_DISPLAYED_WORD = new_word_arr;
-        console.log("New current_display: " + CURRENT_DISPLAYED_WORD);
-        displayWord(CURRENT_DISPLAYED_WORD);
-        win_condition(new_word_arr);
+        CURRENT_DISPLAY_WORD = new_word_arr;
+        console.log("New current_display: " + CURRENT_DISPLAY_WORD);
+        displayWord(CURRENT_DISPLAY_WORD);
       }
 
       // Checks for win condition if word is in the bank
-      function win_condition(wordarray) {
-        let CURRENT_WORD = wordarray.join('');
-        let LOWERCASE_WORD = CURRENT_WORD.toLowerCase();
-        if (WORD_BANK.indexOf(LOWERCASE_WORD) > - 1) {
+      function end_condition(word_arr) {
+        let word_str = (word_arr.join('')).toLowerCase();
+        console.log("CURRENT_WORD: " + CURRENT_WORD);
+        if (word_str == CURRENT_WORD){
           displayEndScore(score);
         }
       }
@@ -220,7 +227,7 @@
         updateScoreDisplay();
         CURRENT_WORD = getRandomWord(WORD_BANK, DEFINITION_BANK);
         setDisplayWord(CURRENT_WORD);
-        displayWord(CURRENT_DISPLAYED_WORD);
+        displayWord(CURRENT_DISPLAY_WORD);
         let letterbox = document.getElementById("letter_box");
         let scoreboard = document.getElementById("score_box");
         letterbox.style.display = "block";
@@ -285,7 +292,7 @@
         for (let i = 0; i < word.length; i++){
           word_arr[i] = '_';
         }
-        CURRENT_DISPLAYED_WORD = word_arr;
+        CURRENT_DISPLAY_WORD = word_arr;
       }
 
       //updates lives when incorrect guess
@@ -308,7 +315,7 @@
 
       createbutton();
       setDisplayWord(CURRENT_WORD);
-      displayWord(CURRENT_DISPLAYED_WORD);
+      displayWord(CURRENT_DISPLAY_WORD);
       resetbutton.onclick = resetGame;
     </script>
   </body>
