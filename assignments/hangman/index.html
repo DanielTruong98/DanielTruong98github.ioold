@@ -80,12 +80,15 @@
       }
 
       .resetter {
-        font-size: 2vh;
+        font-size: 5vh;
         font-family:'Times New Roman', Times, serif;
         background-color:darkred;
         color: white;
       }
 
+      .divReset{
+        text-align:center;
+      }
     </style>
   </head>
   <body>
@@ -106,11 +109,11 @@
         <p id = "lives"> Lives: 7</p>
       </div>
     </div>
-    <div class = "letterBox" id = "letter_box">
+    <div class = "letterBox" id = "letter_box"></div>
+    <div class = "scoreBoard" id = "score_box"></div>
+    <div class="divReset">
+      <input type = "button" id = "reset" class = "resetter" value = 'Reset Game'>
     </div>
-    <div class = "scoreBoard" id = "score_box">
-    </div>
-    <input type = "button" id = "reset" class = "resetter" value = 'Reset Game'>
     <script>
       //Global Variables
       let WORD_BANK = ['committee', 'thinkable', 'hanging', 'sweater', 'window', 'wicked', 'humorous', 'amused', 'entertain', 'unsuitable'];
