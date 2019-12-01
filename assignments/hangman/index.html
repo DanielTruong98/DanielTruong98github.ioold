@@ -138,7 +138,6 @@
       //get a random word from WORD_BANK and returns the random word
       function getRandomWord(word_arr, def_arr){
         let position = Math.floor(Math.random() * 10);
-        console.log(position);
         let definition = def_arr[position];
         document.getElementById("definition_box").innerHTML = definition;
         return word_arr[position];
@@ -152,7 +151,6 @@
             occurence++;
           }
         }
-        console.log(occurence);
         return occurence;
       }
 
@@ -168,10 +166,8 @@
         this.btn.innerHTML = letter;
         this.btn.onclick = function(){
           this.style.visibility = 'hidden';
-          console.log("Clicked: " + letter);
           testLetter(letter);
           changeScore(checkLetterOccurences(letter, CURRENT_WORD));
-          console.log("CURRENT_DISPLAY_WORD:" + CURRENT_DISPLAY_WORD);
           end_condition(CURRENT_DISPLAY_WORD);
         };
       }
@@ -180,7 +176,6 @@
       function testLetter(letter){
         for (let i = 0; i < CURRENT_WORD.length; i++){
           if (CURRENT_WORD[i] == letter.toLowerCase()){
-            console.log("Found at: " + i);
             replaceLetter(letter, i);
           }
         }
@@ -194,14 +189,12 @@
         }
         new_word_arr[position] = letter;
         CURRENT_DISPLAY_WORD = new_word_arr;
-        console.log("New current_display: " + CURRENT_DISPLAY_WORD);
         displayWord(CURRENT_DISPLAY_WORD);
       }
 
       // Checks for win condition if word is in the bank
       function end_condition(word_arr) {
         let word_str = (word_arr.join('')).toLowerCase();
-        console.log("CURRENT_WORD: " + CURRENT_WORD);
         if (word_str == CURRENT_WORD){
           displayEndScore(score);
         }
@@ -238,7 +231,6 @@
         if (occurence != 0){
           score = score + occurence;
           updateScoreDisplay();
-          console.log(score);
         }
         else {
         	score--;
@@ -246,7 +238,6 @@
           updateScoreDisplay();
           updateLivesDisplay();
           checkLives(score);
-          console.log(score);
         }
       }
 
@@ -269,10 +260,6 @@
         let newp = document.createElement('p');
         newp.innerHTML = word_arr;
         target.appendChild(newp);
-        console.log("Word: " + word);
-        console.log("Word length: " + word.length);
-        console.log("Word_arr length: " + word_arr.length);
-        console.log(word_arr);
       }
 
       //sets the word_box when a letter is guessed correctly
@@ -280,10 +267,6 @@
         display_word_arr = display_word_arr.join(' ');
         let target = document.getElementById("word_box");
         target.innerHTML = display_word_arr;
-        console.log("Word: " + CURRENT_WORD);
-        console.log("Word length: " + CURRENT_WORD.length);
-        console.log("Word_arr length: " + display_word_arr.length);
-        console.log(display_word_arr);
       }
 
       //part of resetting displayed word to all underscores
