@@ -1,0 +1,84 @@
+.header {
+  text-align: center;
+  color: black;
+  font-size: 3vh;
+}
+
+.column {
+  float: left;
+  width: 20%;
+  padding-left: 25%;
+  font-weight: bold;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.buttonschanger {
+  border-radius: 8px;
+  margin: 0.5px;
+  border: none;
+  background-color: lightskyblue;
+  font-size: 8vh;
+  font-family: "Courier New";
+  font-weight: bold;
+  text-align: center;
+  border: solid;
+}
+
+.scoreBoard{
+  border-radius: 10px;
+  background-color: green;
+  font-size: 8vh;
+  text-align: center;
+}
+
+.letterBox{
+  width: 90vw;
+  text-align: center;
+  border: solid;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wordBox{
+  width:90vw;
+  height:5vh;
+  text-align: center;
+  border: solid;
+  margin-left:auto;
+  margin-right: auto;
+  font-size: larger;
+}
+
+ .definitionBox {
+  width: 90vw;
+  text-align: center;
+  margin-left:auto;
+  margin-right: auto;
+  font-size: larger;
+}
+
+.insideBox{
+  display: inline-block;
+  border-radius:8px;
+  margin: 0.5px;
+  font-size: larger;
+  font-weight: bold;
+  text-align: center;
+  border: solid;
+}
+
+.resetter {
+  font-size: 5vh;
+  font-family:'Times New Roman', Times, serif;
+  background-color:darkred;
+  color: white;
+}
+
+.divReset{
+  text-align:center;
+}
