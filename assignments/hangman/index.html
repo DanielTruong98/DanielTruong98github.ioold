@@ -6,10 +6,9 @@
     <title></title>
     <style>
       .header {
-      	padding: 60px;
         text-align: center;
         color: black;
-        font-size: 10vh;
+        font-size: 3vh;
       }
 
       .column {
@@ -45,8 +44,8 @@
       }
 
       .letterBox{
-      	width: 50%;
-        height: 50%;
+      	width: 80vw;
+        height: 55vh;
         text-align: center;
         border: solid;
         margin-left: auto;
@@ -54,8 +53,8 @@
       }
 
       .wordBox{
-      	width:50%;
-        height:50px;
+      	width:80vw;
+        height:5vh;
         text-align: center;
         border: solid;
         margin-left:auto;
@@ -64,8 +63,7 @@
       }
 
        .definitionBox {
-        width:50%;
-        height:50px;
+        width: 30vw;
         text-align: center;
         margin-left:auto;
         margin-right: auto;
@@ -282,11 +280,8 @@
         console.log("Word_arr length: " + word_arr.length);
         console.log(word_arr);
       }
-      //replaces the letter if the user's guess is correct
-      function replaceLetterInWord(letter, word){
 
-      }
-
+      //sets the word_box when a letter is guessed correctly
       function displayWord(display_word_arr){
         display_word_arr = display_word_arr.join(' ');
         let target = document.getElementById("word_box");
@@ -297,6 +292,7 @@
         console.log(display_word_arr);
       }
 
+      //part of resetting displayed word to all underscores
       function setDisplayWord(word){
         let word_arr = [];
         for (let i = 0; i < word.length; i++){
@@ -305,11 +301,13 @@
         CURRENT_DISPLAYED_WORD = word_arr;
       }
 
+      //updates lives when incorrect guess
       function updateLivesDisplay(){
         let target = document.getElementById("lives");
         target.innerHTML = "Lives: " + LIVES;
       }
 
+      //updates score when user guesses
       function updateScoreDisplay(){
         let target = document.getElementById("score");
         target.innerHTML = "Score: " + score;
