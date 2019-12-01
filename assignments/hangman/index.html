@@ -15,6 +15,7 @@
       	float: left;
         width: 20%;
         padding-left: 25%;
+        font-weight: bold;
       }
 
       .row:after {
@@ -28,7 +29,7 @@
         margin: 0.5px;
         border: none;
         background-color: lightskyblue;
-        font-size: 7vh;
+        font-size: 8vh;
         font-family: "Courier New";
         font-weight: bold;
         text-align: center;
@@ -37,15 +38,13 @@
 
       .scoreBoard{
       	border-radius: 10px;
-        margin: 20%;
         background-color: green;
-        font-size: 20px;
+        font-size: 8vh;
         text-align: center;
       }
 
       .letterBox{
       	width: 90vw;
-        height: 55vh;
         text-align: center;
         border: solid;
         margin-left: auto;
@@ -90,7 +89,6 @@
     </style>
   </head>
   <body>
-    <div id=all>
     <div class = "header">
       <h2>HANGMAN</h2>
     </div>
@@ -102,16 +100,17 @@
     </div>
     <div class = "row">
       <div class = "column">
-        <h3 id = "score"> Score: 0</h3>
+        <p id = "score"> Score: 0</p>
       </div>
       <div class = "column">
-        <h3 id = "lives"> Lives: 7</h3>
+        <p id = "lives"> Lives: 7</p>
       </div>
     </div>
     <div class = "letterBox" id = "letter_box">
     </div>
+    <div class = "scoreBoard" id = "score_box">
+    </div>
     <input type = "button" id = "reset" class = "resetter" value = 'Reset Game'>
-  </div>
     <script>
       //Global Variables
       let WORD_BANK = ['committee', 'thinkable', 'hanging', 'sweater', 'window', 'wicked', 'humorous', 'amused', 'entertain', 'unsuitable'];
@@ -195,7 +194,6 @@
         let LOWERCASE_WORD = CURRENT_WORD.toLowerCase();
         if (WORD_BANK.indexOf(LOWERCASE_WORD) > - 1) {
           displayEndScore(score);
-          repeatQuestion();
         }
       }
 
@@ -220,6 +218,10 @@
         CURRENT_WORD = getRandomWord(WORD_BANK, DEFINITION_BANK);
         setDisplayWord(CURRENT_WORD);
         displayWord(CURRENT_DISPLAYED_WORD);
+        let letterbox = document.getElementById("letter_box");
+        let scoreboard = document.getElementById("score_box");
+        letterbox.style.display = "block";
+        scoreboard.style.display = "none";
       }
 
       function changeScore(occurence){
@@ -240,30 +242,12 @@
 
       function displayEndScore(score){
         let name = prompt("Please enter your name");
-        let board = document.createElement('div');
-        board.className = "scoreBoard";
-        board.innerHTML = name + ", your score is " + score;
-        document.body.appendChild(board);
+        let scoreboard = document.getElementById("score_box");
+        let letterbox = document.getElementById("letter_box");
+        scoreboard.style.display = "block";
+        scoreboard.innerHTML = name + ", your score is " + score;
+        letterbox.style.display = "none";
       }
-
-      function repeatQuestion() { // Repeats prompt until yes or no
-      while (true)  {
-        let repeat = prompt("Play again? Smile :). Type Yes or No");
-        if (repeat.toLowerCase() == "yes" || repeat.toLowerCase() == "y") {
-          resetGame();
-          break;
-        }
-        else if (repeat.toLowerCase() == "no" || repeat.toLowerCase() == "n") {
-          document.write("See you next term :) Smile");
-          let obj = {"video": {
-    "value": "<iframe width='560' height='315' src='https://www.youtube.com/embed/Qlu4KrK3Pqc?start=175&autoplay=1' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'  allowfullscreen> </iframe>"
-}}
-//document.write(obj.video.value);
-          break;
-
-      }
-    }
-  }
 
       function displayWord(word){
         let word_arr = [];
@@ -316,7 +300,6 @@
       function checkLives(){
         if (LIVES == 0){
           displayEndScore(score);
-          repeatQuestion();
         }
       }
 
