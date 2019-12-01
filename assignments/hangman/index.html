@@ -29,7 +29,7 @@
         margin: 0.5px;
         border: none;
         background-color: lightskyblue;
-        font-size: larger;
+        font-size: 7vh;
         font-family: "Courier New";
         font-weight: bold;
         text-align: center;
@@ -61,6 +61,16 @@
         margin-right: auto;
         font-size: larger;
       }
+
+       .definitionBox {
+        width:50%;
+        height:50px;
+        text-align: center;
+        margin-left:auto;
+        margin-right: auto;
+        font-size: larger;
+      }
+
       .insideBox{
         display: inline-block;
         border-radius:8px;
@@ -70,39 +80,60 @@
         text-align: center;
         border: solid;
       }
+
+      .resetter {
+        font-size: 2vh;
+        font-family:'Times New Roman', Times, serif;
+        background-color:darkred;
+        color: white;
+      }
+
     </style>
   </head>
   <body>
+    <div id=all>
     <div class = "header">
       <h2>HANGMAN</h2>
     </div>
     <div class = "wordBox" id = "word_box">
     <!--Word goes here-->
     </div>
+    <div class = "definitionBox" id = "definition_box">
+      <!-- Definition goes here -->
+    </div>
     <div class = "row">
       <div class = "column">
-        <h2 id = "score"> Score: </h2>
+        <h3 id = "score"> Score: 0</h3>
       </div>
       <div class = "column">
-        <h2 id = "lives"> Lives: </h2>
+        <h3 id = "lives"> Lives: 7</h3>
       </div>
     </div>
     <div class = "letterBox" id = "letter_box">
     </div>
+    <input type = "button" id = "reset" class = "resetter" value = 'Reset Game'>
+  </div>
     <script>
       //Global Variables
       let WORD_BANK = ['committee', 'thinkable', 'hanging', 'sweater', 'window', 'wicked', 'humorous', 'amused', 'entertain', 'unsuitable'];
+      let DEFINITION_BANK = ["A group of people appointed for a specific function.", 'Able to be thought of or imagined; conceivable.',
+      'To be suspended in the air.', 'A knitted garment typically long sleeves, worn over the upper body', 'An opening in the wall made of glass or other transparent material, to see through.',
+      'Evil or morally wrong', 'A quality of being amusing or comic.', 'Finding something funny or entertaining', 'Provide (someone) with amusement or enjoyment.',
+      'To be unfit or inapproriate.'];
       let LIVES = 7;
       let buttonarray = [];
       let wordarray = [];
       let score = 0;
-      let CURRENT_WORD = getRandomWord(WORD_BANK);
+      let CURRENT_WORD = getRandomWord(WORD_BANK, DEFINITION_BANK);
       let CURRENT_DISPLAY_WORD = [];
+      let resetbutton = document.getElementById("reset");
 
       //get a random word from WORD_BANK and returns the random word
-      function getRandomWord(word_arr){
+      function getRandomWord(word_arr, def_arr){
         let position = Math.floor(Math.random() * 10);
         console.log(position);
+        let definition = def_arr[position];
+        document.getElementById("definition_box").innerHTML = definition;
         return word_arr[position];
       }
 
@@ -120,7 +151,7 @@
 
       //object constructor for the buttons
       function button(letter) {
-        //have to make buttons bigger (not mobile friendly rn)
+        //have to make buttons bigger (not mobile friendly rn) changed to 7 vh
         let l_box = document.getElementById("letter_box");
         this.letter = letter;
         this.btn = document.createElement('BUTTON');
@@ -156,6 +187,17 @@
         CURRENT_DISPLAYED_WORD = new_word_arr;
         console.log("New current_display: " + CURRENT_DISPLAYED_WORD);
         displayWord(CURRENT_DISPLAYED_WORD);
+        win_condition(new_word_arr);
+      }
+
+      // Checks for win condition if word is in the bank
+      function win_condition(wordarray) {
+        let CURRENT_WORD = wordarray.join('');
+        let LOWERCASE_WORD = CURRENT_WORD.toLowerCase();
+        if (WORD_BANK.indexOf(LOWERCASE_WORD) > - 1) {
+          displayEndScore(score);
+          repeatQuestion();
+        }
       }
 
       //creates the buttons for user to click on
@@ -170,11 +212,15 @@
       //resets the game to the original position
       function resetGame(){
         for (let i = 0; i < buttonarray.length; i++){
-          buttonarray[i].style.visibility = 'visible';
+          buttonarray[i].btn.style.visibility = 'visible';
         }
         score = 0;
         LIVES = 7;
-        CURRENT_WORD = getRandomWord(WORD_BANK);
+        updateLivesDisplay();
+        updateScoreDisplay();
+        CURRENT_WORD = getRandomWord(WORD_BANK, DEFINITION_BANK);
+        setDisplayWord(CURRENT_WORD);
+        displayWord(CURRENT_DISPLAYED_WORD);
       }
 
       function changeScore(occurence){
@@ -200,6 +246,25 @@
         board.innerHTML = name + ", your score is " + score;
         document.body.appendChild(board);
       }
+
+      function repeatQuestion() { // Repeats prompt until yes or no
+      while (true)  {
+        let repeat = prompt("Play again? Smile :). Type Yes or No");
+        if (repeat.toLowerCase() == "yes" || repeat.toLowerCase() == "y") {
+          resetGame();
+          break;
+        }
+        else if (repeat.toLowerCase() == "no" || repeat.toLowerCase() == "n") {
+          document.write("See you next term :) Smile");
+          let obj = {"video": {
+    "value": "<iframe width='560' height='315' src='https://www.youtube.com/embed/Qlu4KrK3Pqc?start=175&autoplay=1' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture'  allowfullscreen> </iframe>"
+}}
+//document.write(obj.video.value);
+          break;
+
+      }
+    }
+  }
 
       function displayWord(word){
         let word_arr = [];
@@ -252,13 +317,14 @@
       function checkLives(){
         if (LIVES == 0){
           displayEndScore(score);
+          repeatQuestion();
         }
       }
 
       createbutton();
       setDisplayWord(CURRENT_WORD);
       displayWord(CURRENT_DISPLAYED_WORD);
-
+      resetbutton.onclick = resetGame;
     </script>
   </body>
 </html>
