@@ -128,6 +128,9 @@ function changeScore(occurence){
 //prompts user for name, hides letterbox, displays name
 function displayEndScore(score){
   let name = prompt("Please enter your name");
+  while (name == ''){
+    name = prompt("Please enter your name");
+  }
   let scoreboard = document.getElementById("score_box");
   let letterbox = document.getElementById("letter_box");
   scoreboard.style.display = "block";
