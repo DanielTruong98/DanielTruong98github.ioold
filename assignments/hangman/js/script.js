@@ -134,8 +134,15 @@ function displayEndScore(score){
   let scoreboard = document.getElementById("score_box");
   let letterbox = document.getElementById("letter_box");
   scoreboard.style.display = "block";
-  scoreboard.innerHTML = name + ", your score is " + score;
   letterbox.style.display = "none";
+  if (LIVES == 0) {
+    scoreboard.style.backgroundColor = "red";
+    scoreboard.innerHTML = name + ", GAME OVER<br>Your score is " + score;
+  }
+  else {
+    scoreboard.style.backgroundColor = "green";
+    scoreboard.innerHTML = name + ", Congratulations!<br> Your score is " + score;
+  }
 }
 
 //used to reset CURRENT_DISPLAY_WORD to all underscores and display only underscores where the wordbox is
